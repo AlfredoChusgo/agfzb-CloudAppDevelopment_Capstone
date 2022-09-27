@@ -39,7 +39,7 @@ class CarModel(models.Model):
 
 class CarDealer:
 
-    def __init__(self, address, city, full_name, id, lat, long, short_name, st, zip):
+    def __init__(self, address, city, full_name, id, lat, long, short_name, st, zip,state):
         # Dealer address
         self.address = address
         # Dealer city
@@ -58,6 +58,7 @@ class CarDealer:
         self.st = st
         # Dealer zip
         self.zip = zip
+        self.state = state
 
     def __str__(self):
         return "Dealer name: " + self.full_name
@@ -66,7 +67,7 @@ class CarDealer:
 
 class DealerReview:
 
-    def __init__(self, dealership, name, purchase, review, purchase_date, car_make, car_model, car_year, id):
+    def __init__(self, dealership, name, purchase, review, purchase_date, car_make, car_model, car_year, review_id):
         self.dealership = dealership
         self.name = name
         self.purchase = purchase
@@ -76,7 +77,7 @@ class DealerReview:
         self.car_model = car_model        
         self.car_year = car_year        
         self.sentiment = ""
-        self.id = id
+        self.review_id = review_id
 
     def __str__(self):
         return "[ review: " + self.review + ",sentiment :" + self.sentiment + "]"

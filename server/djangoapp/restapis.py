@@ -29,7 +29,9 @@ def get_request(url, **kwargs):
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
     print(kwargs)
+    print('jsonpayloard begin')
     print(json_payload)
+    print('jsonpayloard end')
     print("POST to {} ".format(url))
     try:
         response = requests.post(url, params=kwargs, json=json_payload)
@@ -61,7 +63,7 @@ def get_dealers_from_cf(url, **kwargs):
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
                                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+                                   st=dealer_doc["st"], zip=dealer_doc["zip"],state = dealer_doc["state"])
             results.append(dealer_obj)
 
     return results
@@ -81,7 +83,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
             #dealer_doc = dealer["doc"]
             doc = result
             # Create a CarDealer object with values in `doc` object
-            review_obj = DealerReview(car_make = doc["car_make"], car_model = doc["car_model"], car_year = doc["car_year"], dealership = doc["dealership"], id = doc["id"], name = doc["name"], purchase = doc["purchase"], purchase_date = doc["purchase_date"], review = doc["review"])
+            review_obj = DealerReview(car_make = doc["car_make"], car_model = doc["car_model"], car_year = doc["car_year"], dealership = doc["dealership"], review_id = doc["review_id"], name = doc["name"], purchase = doc["purchase"], purchase_date = doc["purchase_date"], review = doc["review"])
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)
             list.append(review_obj)
     return list
@@ -93,7 +95,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
 def get_dealer_by_id_from_cf(url, dealerId):
     results = []
     # Call get_request with a URL parameter
-    url = url + "?dealerId=" + dealerId
+    url = url + "?dealerId=" + str(dealerId)
     json_result = get_request(url)
     if json_result:
         # Get the row list in JSON as dealers
@@ -107,9 +109,9 @@ def get_dealer_by_id_from_cf(url, dealerId):
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
                                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+                                   st=dealer_doc["st"], zip=dealer_doc["zip"],state = dealer_doc["state"])
             results.append(dealer_obj)
-
+    print(results)
     return results[0]
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
